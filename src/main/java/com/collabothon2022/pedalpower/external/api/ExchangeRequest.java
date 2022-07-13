@@ -1,16 +1,16 @@
 package com.collabothon2022.pedalpower.external.api;
 
 public class ExchangeRequest {
-    private final int id;
+    private final int userId;
     private final String buyUrl;
 
-    public ExchangeRequest(int id, String buyUrl) {
-        this.id = id;
+    public ExchangeRequest(int userId, String buyUrl) {
+        this.userId = userId;
         this.buyUrl = buyUrl;
     }
 
-    public int getId() {
-        return id;
+    public int getUserId() {
+        return userId;
     }
 
     public String getBuyUrl() {

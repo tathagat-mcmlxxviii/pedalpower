@@ -52,7 +52,7 @@ public class CityInfoApiStub implements CityInfoApi {
 	}
 
 	@Override
-	public String executeExchange(ExchangeRequest exchangeRequest){
-		return mockedResponses.get(exchangeRequest.getBuyUrl()).getBase64TicketImg();
+	public ExchangeResponse executeExchange(ExchangeRequest exchangeRequest) {
+		return mockedResponses.get(exchangeRequest.getBuyUrl());
 	}
 }
