@@ -1,14 +1,20 @@
 package com.collabothon2022.pedalpower.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.collabothon2022.pedalpower.BaseSpringTest;
+import com.collabothon2022.pedalpower.external.api.ExchangeEntry;
+import com.collabothon2022.pedalpower.external.api.ExchangeResponse;
 import com.collabothon2022.pedalpower.persistence.model.City;
 import com.collabothon2022.pedalpower.persistence.model.User;
 import com.collabothon2022.pedalpower.persistence.repository.CityRepository;
@@ -88,6 +94,7 @@ public class UserServiceTest extends BaseSpringTest {
 		user = testee.startTrip(user);
 		assertNotNull(user.getCurrentTripUuid());
 		assertNotNull(user.getCurrentTrip());
+		assertEquals(0, user.getPoints());
 		
 		// when
 		user = testee.endTrip(user);
@@ -95,6 +102,7 @@ public class UserServiceTest extends BaseSpringTest {
 		// then
 		assertNull(user.getCurrentTripUuid());
 		assertNull(user.getCurrentTrip());
+		assertNotEquals(0, user.getPoints());
 	}
 	
 	@Test
@@ -111,5 +119,53 @@ public class UserServiceTest extends BaseSpringTest {
 		
 		// then
 		assertTrue(user.getCurrentTrip().getDatapoints().contains(newGpsEndpoint));
+	}
+	
+	@Test
+	public void shouldGetBuyingOptions() {
+		// given
+		User user = new User("first name", "last name", "email4@test.com");
+		user = userRepository.save(user);
+		
+		// when
+		List<ExchangeEntry> exchangeEntries = testee.getBuyingOptions(user);
+		
+		// then
+		assertFalse(exchangeEntries.isEmpty());
+	}
+	
+	@Test
+	public void shouldBuy() {
+		// given
+		User user = new User("first name", "last name", "email5@test.com");
+		user.setPoints(100);
+		user = userRepository.save(user);
+		List<ExchangeEntry> exchangeEntries = testee.getBuyingOptions(user);
+		assertTrue(user.getPurchaseHistory().isEmpty());
+		
+		// when
+		ExchangeEntry exchangeEntryBuyingOption = exchangeEntries.get(0);
+		ExchangeResponse exchangeResponse = testee.buy(user, exchangeEntryBuyingOption);
+		
+		// then
+		assertNotNull(exchangeResponse.getBase64TicketImg());
+		assertEquals(100-exchangeEntryBuyingOption.getPointValue(), user.getPoints());
+	}
+	
+	@Test
+	public void shouldLoadPurchaseHistory() {
+		// given
+		User user = new User("first name", "last name", "email5@test.com");
+		user = userRepository.save(user);
+		List<ExchangeEntry> exchangeEntries = testee.getBuyingOptions(user);
+		assertTrue(user.getPurchaseHistory().isEmpty());
+		testee.buy(user, exchangeEntries.get(0));
+		assertTrue(user.getPurchaseHistory().isEmpty());
+		
+		// when
+		user = testee.loadPurchaseHistory(user);
+		
+		// then
+		assertFalse(user.getPurchaseHistory().isEmpty());
 	}
 }

@@ -1,5 +1,9 @@
 package com.collabothon2022.pedalpower.service;
 
+import java.util.List;
+
+import com.collabothon2022.pedalpower.external.api.ExchangeEntry;
+import com.collabothon2022.pedalpower.external.api.ExchangeResponse;
 import com.collabothon2022.pedalpower.persistence.model.User;
 
 public interface UserService {
@@ -42,4 +46,29 @@ public interface UserService {
 	 * @return
 	 */
 	User updateTrip(User user, String newGpsEndpoint);
+	
+	/**
+	 * Get all possible buying options.
+	 * Depends on city of the user
+	 * @param user
+	 * @return
+	 */
+	List<ExchangeEntry> getBuyingOptions(User user);
+	
+	/**
+	 * Buy the ticket using city api.
+	 * Returns the ticket.
+	 * Reduces the points.
+	 * @param user
+	 * @param exchangeEntry
+	 * @return
+	 */
+	ExchangeResponse buy(User user, ExchangeEntry exchangeEntry);
+	
+	/**
+	 * Load all previous purchases
+	 * @param user
+	 * @return
+	 */
+	User loadPurchaseHistory(User user);
 }
