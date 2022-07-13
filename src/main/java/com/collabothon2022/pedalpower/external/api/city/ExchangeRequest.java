@@ -1,4 +1,4 @@
-package com.collabothon2022.pedalpower.external.api;
+package com.collabothon2022.pedalpower.external.api.city;
 
 public class ExchangeRequest {
     private final int userId;

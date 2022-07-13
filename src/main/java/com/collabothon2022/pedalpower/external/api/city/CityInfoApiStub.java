@@ -1,4 +1,4 @@
-package com.collabothon2022.pedalpower.external.api;
+package com.collabothon2022.pedalpower.external.api.city;
 
 import java.io.BufferedReader;
 import java.io.IOException;

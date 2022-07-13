@@ -1,10 +1,10 @@
 package com.collabothon2022.pedalpower.external;
 
-import com.collabothon2022.pedalpower.external.api.CityInfoApi;
-import com.collabothon2022.pedalpower.external.api.CityInfoApiStub;
-import com.collabothon2022.pedalpower.external.api.ExchangeEntry;
-import com.collabothon2022.pedalpower.external.api.ExchangeRequest;
-import com.collabothon2022.pedalpower.external.api.ExchangeResponse;
+import com.collabothon2022.pedalpower.external.api.city.CityInfoApi;
+import com.collabothon2022.pedalpower.external.api.city.CityInfoApiStub;
+import com.collabothon2022.pedalpower.external.api.city.ExchangeEntry;
+import com.collabothon2022.pedalpower.external.api.city.ExchangeRequest;
+import com.collabothon2022.pedalpower.external.api.city.ExchangeResponse;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
