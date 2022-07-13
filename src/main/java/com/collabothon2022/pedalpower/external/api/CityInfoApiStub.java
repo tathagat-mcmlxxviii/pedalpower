@@ -1,7 +1,5 @@
 package com.collabothon2022.pedalpower.external.api;
 
-import com.collabothon2022.pedalpower.persistence.model.City;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -57,9 +55,4 @@ public class CityInfoApiStub implements CityInfoApi {
 	public ExchangeResponse executeExchange(ExchangeRequest exchangeRequest) {
 		return mockedResponses.get(exchangeRequest.getBuyUrl());
 	}
-
-    @Override
-    public int getOneKilometerPointsValue(City city) {
-        return 2;
-    }
 }
