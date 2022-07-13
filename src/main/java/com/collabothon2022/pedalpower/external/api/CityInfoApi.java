@@ -4,4 +4,6 @@ import java.util.List;
 
 public interface CityInfoApi {
     List<ExchangeEntry> getExchangeOptionList();
+
+    String executeExchange(ExchangeRequest exchangeRequest);
 }

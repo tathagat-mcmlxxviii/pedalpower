@@ -2,14 +2,24 @@ package com.collabothon2022.pedalpower.external.api;
 
 public class ExchangeEntry {
 
+    private int id;
     private int pointValue;
     private String labelText;
-    private String base64TicketImg;
+    private String buyUrl;
 
-    public ExchangeEntry(int pointValue, String labelText, String base64TicketImg) {
+    public ExchangeEntry(int id,int pointValue, String labelText, String buyUrl) {
+        this.id = id;
         this.pointValue = pointValue;
         this.labelText = labelText;
-        this.base64TicketImg = base64TicketImg;
+        this.buyUrl = buyUrl;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getPointValue() {
@@ -28,11 +38,11 @@ public class ExchangeEntry {
         this.labelText = labelText;
     }
 
-    public String getBase64TicketImg() {
-        return base64TicketImg;
+    public String getBuyUrl() {
+        return buyUrl;
     }
 
-    public void setBase64TicketImg(String base64TicketImg) {
-        this.base64TicketImg = base64TicketImg;
+    public void setBuyUrl(String buyUrl) {
+        this.buyUrl = buyUrl;
     }
 }

@@ -5,15 +5,25 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class CityInfoApiStub implements CityInfoApi{
+public class CityInfoApiStub implements CityInfoApi {
+
+	private static final String TICKET_20_MIN_URL = "http://city.external.api/20minTicket";
+	private static final String TICKET_40_MIN_URL = "http://city.external.api/40minTicket";
 
 	private final List<ExchangeEntry> exchangeTable = new ArrayList<>();
 
+	private final Map<String, ExchangeResponse> mockedResponses = new HashMap<>();
+
 	public CityInfoApiStub() {
-		exchangeTable.add(new ExchangeEntry(10, "20 min ticket", readBase64Img("20minTicket.txt")));
-		exchangeTable.add(new ExchangeEntry(20, "40 min ticket", readBase64Img("40minTicket.txt")));
+		exchangeTable.add(new ExchangeEntry(1, 10, "20 min ticket", TICKET_20_MIN_URL));
+		exchangeTable.add(new ExchangeEntry(2, 20, "40 min ticket", TICKET_40_MIN_URL));
+
+		mockedResponses.put(TICKET_20_MIN_URL, new ExchangeResponse(readBase64Img("20minTicket.txt")));
+		mockedResponses.put(TICKET_40_MIN_URL, new ExchangeResponse(readBase64Img("40minTicket.txt")));
 	}
 
 	private String readBase64Img(String filePath) {
@@ -37,7 +47,12 @@ public class CityInfoApiStub implements CityInfoApi{
 	}
 
 	@Override
-	public List<ExchangeEntry> getExchangeOptionList(){
+	public List<ExchangeEntry> getExchangeOptionList() {
 		return exchangeTable;
+	}
+
+	@Override
+	public String executeExchange(ExchangeRequest exchangeRequest){
+		return mockedResponses.get(exchangeRequest.getBuyUrl()).getBase64TicketImg();
 	}
 }
