@@ -1,6 +1,8 @@
 package com.collabothon2022.pedalpower.persistence.model;
 
 
+import java.util.UUID;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -28,6 +30,8 @@ public class User {
   @EqualsAndHashCode.Include
   private String email;
   private int points;
+  // uuid of the active trip
+  private UUID uuid;
 
   public User(String firstName, String lastName, String email) {
     this.firstName = firstName;
