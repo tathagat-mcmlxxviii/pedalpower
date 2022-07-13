@@ -1,12 +1,16 @@
 package com.collabothon2022.pedalpower.persistence.model;
 
 
+import java.util.List;
 import java.util.UUID;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import lombok.EqualsAndHashCode;
@@ -33,6 +37,8 @@ public class User {
   // uuid of the active trip
   private UUID uuid;
 
+  @OneToMany(mappedBy = "user" ,fetch = FetchType.LAZY)
+  private List<PurchaseHistory> purchaseHistory;
   public User(String firstName, String lastName, String email) {
     this.firstName = firstName;
     this.lastName = lastName;
