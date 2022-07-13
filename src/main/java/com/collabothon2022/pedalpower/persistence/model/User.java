@@ -1,13 +1,16 @@
 package com.collabothon2022.pedalpower.persistence.model;
 
 
+import java.util.List;
 import java.util.UUID;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
@@ -40,6 +43,8 @@ public class User {
   private City city;
   private transient Trip currentTrip;
 
+  @OneToMany(mappedBy = "user" ,fetch = FetchType.LAZY)
+  private List<PurchaseHistory> purchaseHistory;
   public User(String firstName, String lastName, String email) {
     this.firstName = firstName;
     this.lastName = lastName;

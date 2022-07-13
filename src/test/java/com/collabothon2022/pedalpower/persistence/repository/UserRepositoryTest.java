@@ -51,7 +51,7 @@ public class UserRepositoryTest extends BaseSpringTest {
 	@Test
 	public void shoudFindByEmail() {
 		// given
-		String email = "test@test.com";
+		String email = "test2@test.com";
 		User user = new User("first name", "last name", email);
 		user = testee.save(user);
 		
