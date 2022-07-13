@@ -1,7 +1,7 @@
 package com.collabothon2022.pedalpower.controller;
 
 import com.collabothon2022.pedalpower.persistence.model.MeansOfTransport;
-import com.collabothon2022.pedalpower.service.MeansOfTransportService;
+import com.collabothon2022.pedalpower.service.StaticDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,16 +13,16 @@ import java.util.List;
 @RequestMapping("city")
 public class CityController {
 
-	private final MeansOfTransportService meansOfTransportService;
+	private final StaticDataService staticDataService;
 
 	@Autowired
-	public CityController(MeansOfTransportService meansOfTransportService) {
-		this.meansOfTransportService = meansOfTransportService;
+	public CityController(StaticDataService staticDataService) {
+		this.staticDataService = staticDataService;
 	}
 
 	@GetMapping(value = "transport", produces = "application/json")
 	public List<MeansOfTransport> getMeansOfTransport() {
-		return meansOfTransportService.getMeansOfTransport();
+		return staticDataService.getMeansOfTransport();
 	}
 
 }
