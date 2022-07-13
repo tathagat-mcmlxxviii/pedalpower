@@ -1,13 +1,18 @@
 package com.collabothon2022.pedalpower.persistence.repository;
 
-import com.collabothon2022.pedalpower.BaseSpringTest;
-import com.collabothon2022.pedalpower.persistence.model.PurchaseHistory;
-import com.collabothon2022.pedalpower.persistence.model.User;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.List;
+import java.util.Optional;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.Assert;
+
+import com.collabothon2022.pedalpower.BaseSpringTest;
+import com.collabothon2022.pedalpower.persistence.model.PurchaseHistory;
+import com.collabothon2022.pedalpower.persistence.model.User;
 
 public class PurchaseHistoryRepositoryTest extends BaseSpringTest {
 
@@ -32,7 +37,7 @@ public class PurchaseHistoryRepositoryTest extends BaseSpringTest {
 	public void shouldCreatePurchaseHistory() {
 		// given
 		User user = userRepository.findById(testUserId).orElseThrow(() -> new IllegalStateException("no user"));
-		PurchaseHistory purchaseHistory = new PurchaseHistory(1, 10, "ticket", user);
+		PurchaseHistory purchaseHistory = new PurchaseHistory("buyUrl", 10, "ticket", user);
 
 		// when
 		PurchaseHistory saved = testee.save(purchaseHistory);
@@ -41,8 +46,22 @@ public class PurchaseHistoryRepositoryTest extends BaseSpringTest {
 		PurchaseHistory fromDb = testee.findById(saved.getId()).orElse(null);
 		Assertions.assertNotNull(fromDb, "Failed save");
 		Assertions.assertEquals("ticket", fromDb.getBase64OfTicket());
-		Assertions.assertEquals(1, fromDb.getOptionId());
+		Assertions.assertEquals("buyUrl", fromDb.getBuyUrl());
 		Assertions.assertEquals(10, fromDb.getPointCost());
+	}
+	
+	@Test
+	public void shouldFindByUser() {
+		// given
+		User user = userRepository.findById(testUserId).orElseThrow(() -> new IllegalStateException("no user"));
+		PurchaseHistory purchaseHistory = new PurchaseHistory("buyUrl", 10, "ticket", user);
+		testee.save(purchaseHistory);
+
+		// when
+		Optional<List<PurchaseHistory>> history = testee.findByUser(user);
+
+		// then
+		assertTrue(history.isPresent());
 	}
 
 }

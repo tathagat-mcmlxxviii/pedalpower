@@ -9,6 +9,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.stereotype.Component;
+
+import com.collabothon2022.pedalpower.persistence.model.City;
+
+@Component
 public class CityInfoApiStub implements CityInfoApi {
 
 	private static final String TICKET_20_MIN_URL = "http://city.external.api/20minTicket";
@@ -47,7 +52,7 @@ public class CityInfoApiStub implements CityInfoApi {
 	}
 
 	@Override
-	public List<ExchangeEntry> getExchangeOptionList() {
+	public List<ExchangeEntry> getExchangeOptionList(City city) {
 		return exchangeTable;
 	}
 

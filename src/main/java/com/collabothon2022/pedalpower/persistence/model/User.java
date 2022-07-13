@@ -1,6 +1,7 @@
 package com.collabothon2022.pedalpower.persistence.model;
 
 
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -44,7 +45,7 @@ public class User {
   private transient Trip currentTrip;
 
   @OneToMany(mappedBy = "user" ,fetch = FetchType.LAZY)
-  private List<PurchaseHistory> purchaseHistory;
+  private List<PurchaseHistory> purchaseHistory = Collections.emptyList();
   public User(String firstName, String lastName, String email) {
     this.firstName = firstName;
     this.lastName = lastName;
