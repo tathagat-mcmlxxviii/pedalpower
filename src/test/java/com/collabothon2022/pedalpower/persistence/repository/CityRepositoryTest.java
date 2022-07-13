@@ -4,6 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,12 +39,27 @@ public class CityRepositoryTest extends BaseSpringTest {
 		
 		// update
 		String newFirstName = "new city name";
-		found.setCityName(newFirstName);
+		found.setName(newFirstName);
 		found = testee.save(found);
-		assertEquals(newFirstName, found.getCityName());
+		assertEquals(newFirstName, found.getName());
 		
 		// delete
 		testee.delete(found);
 		assertFalse(testee.findById(cityId).isPresent());
+	}
+	
+	@Test
+	public void shoudByName() {
+		// given
+		String name = "city name";
+		City city = new City(name, "info endpoint");
+		city = testee.save(city);
+		
+		// when
+		Optional<City> found = testee.findByName(name);
+		
+		// then
+		assertTrue(found.isPresent());
+		assertEquals(city.getId(), found.get().getId());
 	}
 }
