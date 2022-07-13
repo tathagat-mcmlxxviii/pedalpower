@@ -18,12 +18,12 @@ public class TripRepositoryTest extends BaseSpringTest {
 	private UserRepository userRepository;
 	
 	@Test
-	public void shoudAutowire() {
+	public void shouldAutowire() {
 		assertNotNull(testee);
 	}
 	
 	@Test
-	public void shoudCreateMultipleTripsForUser() {
+	public void shouldCreateMultipleTripsForUser() {
 		// given
 		User user = new User("first name", "last name", "email");
 		user = userRepository.save(user);
@@ -39,5 +39,18 @@ public class TripRepositoryTest extends BaseSpringTest {
 		
 		// then
 		assertEquals(2, testee.findByUser(user).get().size());
+	}
+	
+	@Test
+	public void shouldFindByUuid() {
+		// given
+		Trip trip = new Trip();
+		trip = testee.save(trip);
+		
+		// when
+		Trip found = testee.findByUuid(trip.getUuid()).get();
+		
+		// then
+		assertEquals(trip, found);
 	}
 }

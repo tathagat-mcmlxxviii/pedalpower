@@ -20,12 +20,12 @@ public class City {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	@EqualsAndHashCode.Include
-	private String cityName;
+	private String name;
 	// info endpoint will provide ticket info + buying endpoints
 	private String infoEndpoint;
 	
-	public City(String cityName, String infoEndpoint) {
-		this.cityName = cityName;
+	public City(String name, String infoEndpoint) {
+		this.name = name;
 		this.infoEndpoint = infoEndpoint;
 	}
 }

@@ -9,9 +9,11 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Type;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -35,7 +37,11 @@ public class User {
   private String email;
   private int points;
   // uuid of the active trip
-  private UUID uuid;
+  @Type(type="org.hibernate.type.UUIDCharType")
+  private UUID currentTripUuid;
+  @ManyToOne
+  private City city;
+  private transient Trip currentTrip;
 
   @OneToMany(mappedBy = "user" ,fetch = FetchType.LAZY)
   private List<PurchaseHistory> purchaseHistory;
