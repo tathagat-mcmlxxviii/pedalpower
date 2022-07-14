@@ -5,6 +5,8 @@ const React = require('react'); // <1>
 const ReactDOM = require('react-dom'); // <2>
 // end::vars[]
 
+import Button from '@mui/material/Button';
+
 // tag::app[]
 class App extends React.Component { // <1>
 
@@ -24,7 +26,10 @@ class App extends React.Component { // <1>
 
 	render() { // <3>
 		return (
-			<CityList cities={this.state.cities}/>
+			<div>
+				<CityList cities={this.state.cities}/>
+				<Button variant="contained">Hello World</Button>
+			</div>
 		)
 	}
 }
