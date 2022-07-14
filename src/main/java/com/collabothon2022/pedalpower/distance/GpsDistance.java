@@ -9,6 +9,9 @@ public class GpsDistance implements DistanceApi {
 
 	@Override
 	public double getDistanceInKm(String gpsPointData) {
+		if(gpsPointData == null){
+			return 0;
+		}
 		List<String[]> listOfCoordinates = parseGpsCoordinates(gpsPointData);
 		double meters = 0.0;
 		for (int i = 0; i < listOfCoordinates.size() - 1; i++) {

@@ -82,7 +82,7 @@ public class UserServiceImpl implements UserService {
 		int existingPoints = user.getPoints();
 
 		user.setCurrentTripUuid(null);
-		user.setPoints(existingPoints + (int) Math.floor(distanceInKm));
+		user.setPoints(existingPoints + (int) Math.round(distanceInKm));
 		user = userRepository.save(user);
 
 		return user;
@@ -94,7 +94,12 @@ public class UserServiceImpl implements UserService {
 		Trip currentTrip = tripRepository.findByUuid(currentTripUuid).get();
 
 		String existingDataEndpoints = currentTrip.getDatapoints();
-		String newDataEndpoints = existingDataEndpoints + ";" + newGpsEndpoint;
+		String newDataEndpoints;
+		if (existingDataEndpoints == null) {
+			newDataEndpoints = newGpsEndpoint;
+		} else {
+			newDataEndpoints = existingDataEndpoints + ";" + newGpsEndpoint;
+		}
 		currentTrip.setDatapoints(newDataEndpoints);
 		currentTrip = tripRepository.save(currentTrip);
 

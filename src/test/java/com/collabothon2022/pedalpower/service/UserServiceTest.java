@@ -95,7 +95,9 @@ public class UserServiceTest extends BaseSpringTest {
 		assertNotNull(user.getCurrentTripUuid());
 		assertNotNull(user.getCurrentTrip());
 		assertEquals(9, user.getPoints());
-		
+		testee.updateTrip(user, "51.767328,19.421475");
+		testee.updateTrip(user, "51.755738,19.430354");
+
 		// when
 		user = testee.endTrip(user);
 		
