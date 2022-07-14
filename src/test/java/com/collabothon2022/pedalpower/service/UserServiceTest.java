@@ -2,7 +2,6 @@ package com.collabothon2022.pedalpower.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -90,11 +89,12 @@ public class UserServiceTest extends BaseSpringTest {
 	public void shouldEndTrip() {
 		// given
 		User user = new User("first name", "last name", "email3@test.com");
+		user.setPoints(9);
 		user = userRepository.save(user);
 		user = testee.startTrip(user);
 		assertNotNull(user.getCurrentTripUuid());
 		assertNotNull(user.getCurrentTrip());
-		assertEquals(0, user.getPoints());
+		assertEquals(9, user.getPoints());
 		
 		// when
 		user = testee.endTrip(user);
@@ -102,7 +102,7 @@ public class UserServiceTest extends BaseSpringTest {
 		// then
 		assertNull(user.getCurrentTripUuid());
 		assertNull(user.getCurrentTrip());
-		assertNotEquals(0, user.getPoints());
+		assertTrue(user.getPoints() > 9);
 	}
 	
 	@Test

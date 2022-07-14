@@ -11,6 +11,7 @@ import com.collabothon2022.pedalpower.external.api.city.CityInfoApi;
 import com.collabothon2022.pedalpower.external.api.city.ExchangeEntry;
 import com.collabothon2022.pedalpower.external.api.city.ExchangeRequest;
 import com.collabothon2022.pedalpower.external.api.city.ExchangeResponse;
+import com.collabothon2022.pedalpower.external.api.google.GoogleDistanceApi;
 import com.collabothon2022.pedalpower.persistence.model.City;
 import com.collabothon2022.pedalpower.persistence.model.PurchaseHistory;
 import com.collabothon2022.pedalpower.persistence.model.Trip;
@@ -34,6 +35,9 @@ public class UserServiceImpl implements UserService {
 	
 	@Autowired
 	private CityInfoApi cityInfoApi;
+	
+	@Autowired
+	private GoogleDistanceApi googleDistanceApi;
 	
 	@Autowired
 	private PurchaseHistoryRepository purchaseHistoryRepository;
@@ -72,10 +76,13 @@ public class UserServiceImpl implements UserService {
 		currentTrip.setEndTimestamp(LocalDateTime.now());
 		currentTrip = tripRepository.save(currentTrip);
 		
-		// TODO
-		// call google API to get distance in km based on datapoints
+		String datapoints = currentTrip.getDatapoints();
+		
+		int distanceInKm = googleDistanceApi.getDistanceInKm(datapoints);
+		int existingPoints = user.getPoints();
 		
 		user.setCurrentTripUuid(null);
+		user.setPoints(existingPoints+distanceInKm);
 		user = userRepository.save(user);
 		
 		return user;

@@ -21,6 +21,7 @@ public class ExchangeController {
 
     @GetMapping(value = "list", produces = "application/json")
     public List<ExchangeEntry> getExchangeOptionList(){
-        return cityInfoApi.getExchangeOptionList();
+    	// TODO - use city instead of null
+        return cityInfoApi.getExchangeOptionList(null);
     }
 }
