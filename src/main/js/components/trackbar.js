@@ -1,26 +1,33 @@
-import * as React from 'react';
-import PropTypes from 'prop-types';
-import CircularProgress from '@mui/material/CircularProgress';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
+import * as React from "react";
+import PropTypes from "prop-types";
+import CircularProgress from "@mui/material/CircularProgress";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
 
 function CircularProgressWithLabel(props) {
   return (
-    <Box sx={{ position: 'relative', display: 'inline-flex' }}>
-      <CircularProgress variant="determinate" {...props} />
+    <Box sx={{ position: "relative", display: "inline-flex" }}>
+      <CircularProgress variant="determinate" {...props} size="100px" />
       <Box
         sx={{
           top: 0,
           left: 0,
           bottom: 0,
           right: 0,
-          position: 'absolute',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
+          position: "absolute",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
         }}
       >
-        <Typography variant="caption" component="div" color="text.secondary">
+        <Typography
+          variant="caption"
+          component="div"
+          color="text.secondary"
+          sx={{
+            fontSize: "3em",
+          }}
+        >
           {`${Math.round(props.value)}`}
         </Typography>
       </Box>
@@ -41,7 +48,7 @@ export default function CircularWithValueLabel(props) {
   const [progress] = React.useState(10);
 
   return (
-    <Box sx={{ width: '100%' }}>
+    <Box sx={{ width: "100%" }}>
       <CircularProgressWithLabel value={props.value} />
     </Box>
   );

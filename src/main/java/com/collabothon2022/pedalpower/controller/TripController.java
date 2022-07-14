@@ -8,6 +8,7 @@ import org.hibernate.sql.Update;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -54,7 +55,7 @@ public class TripController {
 		return currentTrip;
 	}
 
-	@PostMapping(produces = "application/json")
+	@PutMapping(produces = "application/json", consumes = "application/json")
 	public Trip updateTrip(@RequestBody UpdateRequest updateRequest) {
 		User user = userService.get(updateRequest.getEmail());
 		user = userService.updateTrip(user, updateRequest.getDataPoint());
@@ -66,6 +67,9 @@ public class TripController {
 	static class UpdateRequest{
 		private String email;
 		private String dataPoint;
+
+		public UpdateRequest() {
+		}
 
 		public String getDataPoint() {
 			return dataPoint;
