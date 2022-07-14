@@ -13,8 +13,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.collabothon2022.pedalpower.BaseSpringTest;
-import com.collabothon2022.pedalpower.external.api.ExchangeEntry;
-import com.collabothon2022.pedalpower.external.api.ExchangeResponse;
+import com.collabothon2022.pedalpower.external.api.city.ExchangeEntry;
+import com.collabothon2022.pedalpower.external.api.city.ExchangeResponse;
 import com.collabothon2022.pedalpower.persistence.model.City;
 import com.collabothon2022.pedalpower.persistence.model.User;
 import com.collabothon2022.pedalpower.persistence.repository.CityRepository;

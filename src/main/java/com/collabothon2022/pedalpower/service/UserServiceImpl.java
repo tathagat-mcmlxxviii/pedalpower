@@ -7,10 +7,10 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.collabothon2022.pedalpower.external.api.CityInfoApi;
-import com.collabothon2022.pedalpower.external.api.ExchangeEntry;
-import com.collabothon2022.pedalpower.external.api.ExchangeRequest;
-import com.collabothon2022.pedalpower.external.api.ExchangeResponse;
+import com.collabothon2022.pedalpower.external.api.city.CityInfoApi;
+import com.collabothon2022.pedalpower.external.api.city.ExchangeEntry;
+import com.collabothon2022.pedalpower.external.api.city.ExchangeRequest;
+import com.collabothon2022.pedalpower.external.api.city.ExchangeResponse;
 import com.collabothon2022.pedalpower.persistence.model.City;
 import com.collabothon2022.pedalpower.persistence.model.PurchaseHistory;
 import com.collabothon2022.pedalpower.persistence.model.Trip;

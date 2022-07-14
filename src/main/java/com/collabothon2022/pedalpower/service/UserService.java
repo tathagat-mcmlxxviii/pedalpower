@@ -2,8 +2,8 @@ package com.collabothon2022.pedalpower.service;
 
 import java.util.List;
 
-import com.collabothon2022.pedalpower.external.api.ExchangeEntry;
-import com.collabothon2022.pedalpower.external.api.ExchangeResponse;
+import com.collabothon2022.pedalpower.external.api.city.ExchangeEntry;
+import com.collabothon2022.pedalpower.external.api.city.ExchangeResponse;
 import com.collabothon2022.pedalpower.persistence.model.User;
 
 public interface UserService {
