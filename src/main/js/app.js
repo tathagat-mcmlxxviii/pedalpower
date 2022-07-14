@@ -4,74 +4,82 @@
 const React = require('react'); // <1>
 const ReactDOM = require('react-dom'); // <2>
 // end::vars[]
+require('./api/api.js')
 
 import Button from '@mui/material/Button';
 import SimpleBottomNavigation from './components/bottomnavigation.js';
 import ResponsiveAppBar from './components/appbar.js';
-import LinearWithValueLabel from './components/trackbar.js';
+import CircularWithValueLabel from './components/trackbar.js';
+import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
+import { startTrip } from './api/api.js';
+
+
+const userEmail = "test@mail.com"
 
 // tag::app[]
 class App extends React.Component { // <1>
 
 	constructor(props) {
 		super(props);
-		this.state = { cities: [] };
+		this.state = { distance : 0 };
 	}
 
 	componentDidMount() { // <2>
-		fetch('/staticdata/cities')
-			.then(response => response.json())
+		setInterval(() => {
+			fetch("http://localhost:8080/trip/current?email=" + userEmail)
 			.then(data => {
-				console.log(data);
-				this.setState({ cities: data });
-			});
+				const obj = JSON.parse(data)
+				if(obj && this.state.distance < 100){
+					this.setState({
+						distance: this.state.distance + 10
+					})
+				}
+			})
+		}, 10000)		
 	}
 
 	render() { // <3>
 		return (
-			<div>
+			<React.Fragment>
 				<ResponsiveAppBar/>
-				
-				<LinearWithValueLabel/>
-				
-				<CityList cities={this.state.cities} />
-				<Button variant="contained">Hello World</Button>
-
-				<SimpleBottomNavigation/>
-			</div>
+				<div style={{height: '100%'}}>
+					<Box sx={{ flexGrow: 1 }}>
+						<Grid container spacing={2} justifyContent="center">
+							<Grid item xs={12}></Grid>
+							<Grid item xs={5}></Grid>
+							<Grid item xs={2} justifyContent="center">
+									<CircularWithValueLabel value={this.state.distance}/>
+							</Grid>
+							<Grid item xs={5} ></Grid>
+							<Grid item xs={4} ></Grid>
+							<Grid item xs={4} justifyContent="center">
+									<Button variant="contained" onClick={() => {this.handleStart()}}>Hello World</Button>
+							</Grid>
+							<Grid item xs={4} ></Grid>
+						</Grid>
+					</Box>
+				</div>
+				<Box sx={{   
+					flexGrow: 1,  
+					position: 'absolute',
+					display: 'flex',     
+					alignItems: 'center',
+					justifyContent: 'center'}
+					}>
+					<SimpleBottomNavigation/>
+				</Box>
+			</React.Fragment>
 		)
+	}
+
+	handleStart(){
+		startTrip(userEmail).then(trip => {
+			this.setState({distance : trip.km})
+		})
 	}
 }
 // end::app[]
-
-// tag::employee-list[]
-class CityList extends React.Component {
-	render() {
-		const cities = this.props.cities.map(city =>
-			<City key={city.id} city={city} />
-		);
-		return (
-			<table>
-				<tbody>
-					{cities}
-				</tbody>
-			</table>
-		)
-	}
-}
-// end::employee-list[]
-
-// tag::employee[]
-class City extends React.Component {
-	render() {
-		return (
-			<tr>
-				<td>{this.props.city.name}</td>
-			</tr>
-		)
-	}
-}
-// end::employee[]
 
 // tag::render[]
 ReactDOM.render(
@@ -79,3 +87,4 @@ ReactDOM.render(
 	document.getElementById('react')
 )
 // end::render[]
+

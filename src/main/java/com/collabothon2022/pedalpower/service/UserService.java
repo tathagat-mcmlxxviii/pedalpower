@@ -1,9 +1,11 @@
 package com.collabothon2022.pedalpower.service;
 
 import java.util.List;
+import java.util.UUID;
 
 import com.collabothon2022.pedalpower.external.api.city.ExchangeEntry;
 import com.collabothon2022.pedalpower.external.api.city.ExchangeResponse;
+import com.collabothon2022.pedalpower.persistence.model.Trip;
 import com.collabothon2022.pedalpower.persistence.model.User;
 
 public interface UserService {
@@ -71,4 +73,7 @@ public interface UserService {
 	 * @return
 	 */
 	User loadPurchaseHistory(User user);
+
+	Trip getTrip(UUID currentTripUuid);
+
 }

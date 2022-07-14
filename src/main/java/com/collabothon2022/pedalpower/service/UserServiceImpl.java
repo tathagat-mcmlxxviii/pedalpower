@@ -131,4 +131,11 @@ public class UserServiceImpl implements UserService {
 		return user;
 	}
 
+	@Override
+	public Trip getTrip(UUID currentTripUuid) {
+		Trip trip = tripRepository.findByUuid(currentTripUuid)
+				.orElseThrow(() -> new IllegalStateException("Cannot find Trip with given id"));
+		return trip;
+	}
+
 }
