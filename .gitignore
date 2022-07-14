@@ -31,3 +31,7 @@ hs_err_pid*
 .gitignore.swp
 .project
 .settings/
+
+# node
+node_modules
+**/bundle.js*
