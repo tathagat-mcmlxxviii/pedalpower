@@ -11,7 +11,7 @@ import com.collabothon2022.pedalpower.external.api.city.CityInfoApi;
 import com.collabothon2022.pedalpower.external.api.city.ExchangeEntry;
 import com.collabothon2022.pedalpower.external.api.city.ExchangeRequest;
 import com.collabothon2022.pedalpower.external.api.city.ExchangeResponse;
-import com.collabothon2022.pedalpower.external.api.google.GoogleDistanceApi;
+import com.collabothon2022.pedalpower.distance.DistanceApi;
 import com.collabothon2022.pedalpower.persistence.model.City;
 import com.collabothon2022.pedalpower.persistence.model.PurchaseHistory;
 import com.collabothon2022.pedalpower.persistence.model.Trip;
@@ -23,22 +23,22 @@ import com.collabothon2022.pedalpower.persistence.repository.UserRepository;
 
 @Service
 public class UserServiceImpl implements UserService {
-	
+
 	@Autowired
 	private UserRepository userRepository;
-	
+
 	@Autowired
 	private CityRepository cityRepository;
-	
+
 	@Autowired
 	private TripRepository tripRepository;
-	
+
 	@Autowired
 	private CityInfoApi cityInfoApi;
-	
+
 	@Autowired
-	private GoogleDistanceApi googleDistanceApi;
-	
+	private DistanceApi distanceApi;
+
 	@Autowired
 	private PurchaseHistoryRepository purchaseHistoryRepository;
 
@@ -60,12 +60,12 @@ public class UserServiceImpl implements UserService {
 		Trip trip = new Trip();
 		trip.setUser(user);
 		trip = tripRepository.save(trip);
-		
+
 		user.setCurrentTripUuid(trip.getUuid());
 		user = userRepository.save(user);
-		
+
 		user.setCurrentTrip(trip);
-		
+
 		return user;
 	}
 
@@ -75,16 +75,16 @@ public class UserServiceImpl implements UserService {
 		Trip currentTrip = tripRepository.findByUuid(currentTripUuid).get();
 		currentTrip.setEndTimestamp(LocalDateTime.now());
 		currentTrip = tripRepository.save(currentTrip);
-		
+
 		String datapoints = currentTrip.getDatapoints();
-		
-		int distanceInKm = googleDistanceApi.getDistanceInKm(datapoints);
+
+		double distanceInKm = distanceApi.getDistanceInKm(datapoints);
 		int existingPoints = user.getPoints();
-		
+
 		user.setCurrentTripUuid(null);
-		user.setPoints(existingPoints+distanceInKm);
+		user.setPoints(existingPoints + (int) Math.round(distanceInKm));
 		user = userRepository.save(user);
-		
+
 		return user;
 	}
 
@@ -92,14 +92,19 @@ public class UserServiceImpl implements UserService {
 	public User updateTrip(User user, String newGpsEndpoint) {
 		UUID currentTripUuid = user.getCurrentTripUuid();
 		Trip currentTrip = tripRepository.findByUuid(currentTripUuid).get();
-		
+
 		String existingDataEndpoints = currentTrip.getDatapoints();
-		String newDataEndpoints = existingDataEndpoints + ";" + newGpsEndpoint;
+		String newDataEndpoints;
+		if (existingDataEndpoints == null) {
+			newDataEndpoints = newGpsEndpoint;
+		} else {
+			newDataEndpoints = existingDataEndpoints + ";" + newGpsEndpoint;
+		}
 		currentTrip.setDatapoints(newDataEndpoints);
 		currentTrip = tripRepository.save(currentTrip);
-		
+
 		user.setCurrentTrip(currentTrip);
-		
+
 		return user;
 	}
 
@@ -112,15 +117,16 @@ public class UserServiceImpl implements UserService {
 	public ExchangeResponse buy(User user, ExchangeEntry exchangeEntry) {
 		ExchangeRequest request = new ExchangeRequest(user.getId(), exchangeEntry.getBuyUrl());
 		ExchangeResponse executeExchangeResponse = cityInfoApi.executeExchange(request);
-		
-		PurchaseHistory purchaseHistory = new PurchaseHistory(exchangeEntry.getBuyUrl(), exchangeEntry.getPointValue(), executeExchangeResponse.getBase64TicketImg(), user);
+
+		PurchaseHistory purchaseHistory = new PurchaseHistory(exchangeEntry.getBuyUrl(), exchangeEntry.getPointValue(),
+				executeExchangeResponse.getBase64TicketImg(), user);
 		purchaseHistoryRepository.save(purchaseHistory);
-		
+
 		int currentPoints = user.getPoints();
 		int newPoints = currentPoints - exchangeEntry.getPointValue();
 		user.setPoints(newPoints);
 		user = userRepository.save(user);
-		
+
 		return executeExchangeResponse;
 	}
 
