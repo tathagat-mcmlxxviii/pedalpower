@@ -15,8 +15,11 @@
   ],
   "author": "Tathagat",
   "dependencies": {
-    "react": "^16.5.2",
-    "react-dom": "^16.5.2",
+    "@emotion/react": "^11.9.3",
+    "@emotion/styled": "^11.9.3",
+    "@mui/material": "^5.9.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
     "rest": "^1.3.1"
   },
   "scripts": {
