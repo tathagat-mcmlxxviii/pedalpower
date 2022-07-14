@@ -4,17 +4,23 @@
 const React = require("react"); // <1>
 const ReactDOM = require("react-dom"); // <2>
 // end::vars[]
-import { startTrip, userEmail, sendDataPoint } from "./api/api.js";
+import {
+  startTrip,
+  userEmail,
+  sendDataPoint,
+  endTrip,
+  getUser,
+} from "./api/api.js";
 
-import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Container from "@mui/material/Container";
-import Typography from "@mui/material/Typography";
 
 import SimpleBottomNavigation from "./components/bottomnavigation.js";
 import ResponsiveAppBar from "./components/appbar.js";
 import CircularWithValueLabel from "./components/trackbar.js";
+import PointsSummary from "./components/pointsSummary.js";
+import StartStopButton from "./components/startStopButton.js";
 
 let dataPointTimer;
 
@@ -24,11 +30,17 @@ class App extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { distance: 0 };
+    this.state = {
+      distance: 0,
+      points: 0,
+    };
   }
 
   componentDidMount() {
     // <2>
+    getUser(userEmail).then((user) => {
+      this.updateState(this.state.distance, user.points);
+    });
   }
 
   render() {
@@ -45,7 +57,18 @@ class App extends React.Component {
           <ResponsiveAppBar />
           <Box sx={{ flexGrow: 1 }}>
             <Grid container spacing={2}>
-              <Grid item xs={12}></Grid>
+              <Grid item xs={4}></Grid>
+              <Grid item xs={4}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  <PointsSummary points={this.state.points} />
+                </Box>
+              </Grid>
+              <Grid item xs={4}></Grid>
               <Grid item xs={5}></Grid>
               <Grid item xs={2}>
                 <Box
@@ -65,14 +88,10 @@ class App extends React.Component {
                     justifyContent: "center",
                   }}
                 >
-                  <Button
-                    variant="contained"
-                    onClick={() => {
-                      this.handleStart();
-                    }}
-                  >
-                    Start
-                  </Button>
+                  <StartStopButton
+                    onStart={this.handleStart.bind(this)}
+                    onStop={this.handleStop.bind(this)}
+                  />
                 </Box>
               </Grid>
               <Grid item xs={4}></Grid>
@@ -98,7 +117,7 @@ class App extends React.Component {
 
   handleStart() {
     startTrip(userEmail).then((trip) => {
-      this.setState({ distance: trip.km });
+      this.updateState(trip.km, this.state.points);
 
       this.startUpdateLoop();
     });
@@ -109,8 +128,7 @@ class App extends React.Component {
       const promise = sendDataPoint();
       if (promise) {
         promise.then((trip) => {
-          console.log(trip.km);
-          this.setState({ distance: trip.km });
+          this.updateState(trip.km, this.state.points);
         });
       }
     }, 2000);
@@ -118,6 +136,20 @@ class App extends React.Component {
 
   stopUpdateLoop() {
     clearInterval(dataPointTimer);
+  }
+
+  handleStop() {
+    this.stopUpdateLoop();
+    endTrip(userEmail).then((user) => {
+      this.updateState(this.state.distance, user.points);
+    });
+  }
+
+  updateState(distance, points) {
+    this.setState({
+      distance: distance,
+      points: points,
+    });
   }
 }
 // end::app[]

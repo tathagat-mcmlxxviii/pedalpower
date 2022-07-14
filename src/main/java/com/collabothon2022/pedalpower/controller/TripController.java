@@ -47,12 +47,10 @@ public class TripController {
 	}
 
 	@GetMapping(value = "end", produces = "application/json")
-	public Trip endTrip(@RequestParam("email") String email) {
+	public User endTrip(@RequestParam("email") String email) {
 		User user = userService.get(email);
 		user = userService.endTrip(user);
-		Trip currentTrip = user.getCurrentTrip();
-		currentTrip.setUser(null);
-		return currentTrip;
+		return user;
 	}
 
 	@PutMapping(produces = "application/json", consumes = "application/json")

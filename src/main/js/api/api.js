@@ -22,7 +22,9 @@ export const mockedGpsData = [
 ];
 
 export function startTrip(email) {
-  return fetch("http://localhost:8080/trip/start?email=" + email).then((response) => response.json());
+  return fetch("http://localhost:8080/trip/start?email=" + email).then(
+    (response) => response.json()
+  );
 }
 
 export function sendDataPoint(email) {
@@ -30,7 +32,7 @@ export function sendDataPoint(email) {
     return fetch("http://localhost:8080/trip", {
       method: "put",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         email: userEmail,
@@ -39,3 +41,17 @@ export function sendDataPoint(email) {
     }).then((response) => response.json());
   }
 }
+
+export function endTrip(email) {
+  return fetch("http://localhost:8080/trip/end?email=" + email).then(
+    (response) => response.json()
+  );
+}
+
+
+export function getUser(email) {
+    return fetch("http://localhost:8080/user?email=" + email).then(
+      (response) => response.json()
+    );
+  }
+  
