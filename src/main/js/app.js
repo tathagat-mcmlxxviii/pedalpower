@@ -97,24 +97,22 @@ class App extends React.Component {
   }
 
   handleStart() {
-    startTrip(userEmail).then((data) => {
-      if (data.body.length) {
-        const trip = JSON.parse(data.body);
-        this.setState({ distance: trip.km });
-      }
+    startTrip(userEmail).then((trip) => {
+      this.setState({ distance: trip.km });
+
       this.startUpdateLoop();
     });
   }
 
   startUpdateLoop() {
     dataPointTimer = setInterval(() => {
-      sendDataPoint().then((data) => {
-        console.log(data);
-        if (data && data.body.length) {
-          const trip = JSON.parse(data.body);
-          this.setState({ direction: trip.km });
-        }
-      });
+      const promise = sendDataPoint();
+      if (promise) {
+        promise.then((trip) => {
+          console.log(trip.km);
+          this.setState({ distance: trip.km });
+        });
+      }
     }, 2000);
   }
 

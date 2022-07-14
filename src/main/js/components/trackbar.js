@@ -25,10 +25,10 @@ function CircularProgressWithLabel(props) {
           component="div"
           color="text.secondary"
           sx={{
-            fontSize: "3em",
+            fontSize: "2em",
           }}
         >
-          {`${Math.round(props.value)}`}
+          {`${Math.round(props.value)} km`}
         </Typography>
       </Box>
     </Box>

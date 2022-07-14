@@ -22,7 +22,7 @@ export const mockedGpsData = [
 ];
 
 export function startTrip(email) {
-  return fetch("http://localhost:8080/trip/start?email=" + email);
+  return fetch("http://localhost:8080/trip/start?email=" + email).then((response) => response.json());
 }
 
 export function sendDataPoint(email) {
@@ -36,6 +36,6 @@ export function sendDataPoint(email) {
         email: userEmail,
         dataPoint: mockedGpsData.pop(),
       }),
-    });
+    }).then((response) => response.json());
   }
 }

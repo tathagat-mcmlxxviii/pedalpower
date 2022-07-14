@@ -101,6 +101,8 @@ public class UserServiceImpl implements UserService {
 			newDataEndpoints = existingDataEndpoints + ";" + newGpsEndpoint;
 		}
 		currentTrip.setDatapoints(newDataEndpoints);
+		double distanceInKm = distanceApi.getDistanceInKm(newDataEndpoints);
+		currentTrip.setKm((int) Math.round(distanceInKm));
 		currentTrip = tripRepository.save(currentTrip);
 
 		user.setCurrentTrip(currentTrip);

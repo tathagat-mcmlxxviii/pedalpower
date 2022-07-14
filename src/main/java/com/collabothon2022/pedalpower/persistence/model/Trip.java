@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.Type;
@@ -29,6 +30,7 @@ public class Trip {
 	@ManyToOne
 	private MeansOfTransport meansOfTransport;
 	// semicolon separated GPS datapoints
+	@Lob
 	private String datapoints;
 	// rounded off km for now
 	private int km;
