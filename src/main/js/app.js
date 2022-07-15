@@ -22,7 +22,7 @@ import CircularWithValueLabel from "./components/trackbar.js";
 import PointsSummary from "./components/pointsSummary.js";
 import StartStopButton from "./components/startStopButton.js";
 
-let dataPointTimer;
+import HomeSection from "./components/home.js";
 
 // tag::app[]
 class App extends React.Component {
@@ -32,7 +32,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       distance: 0,
-      points: 0,
+      points: 0
     };
   }
 
@@ -55,48 +55,9 @@ class App extends React.Component {
           }}
         >
           <ResponsiveAppBar />
-          <Box sx={{ flexGrow: 1 }}>
-            <Grid container spacing={2}>
-              <Grid item xs={4}></Grid>
-              <Grid item xs={4}>
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                  }}
-                >
-                  <PointsSummary points={this.state.points} />
-                </Box>
-              </Grid>
-              <Grid item xs={4}></Grid>
-              <Grid item xs={5}></Grid>
-              <Grid item xs={2}>
-                <Box
-                  sx={{
-                    px: "32%",
-                  }}
-                >
-                  <CircularWithValueLabel value={this.state.distance} />
-                </Box>
-              </Grid>
-              <Grid item xs={5}></Grid>
-              <Grid item xs={4}></Grid>
-              <Grid item xs={4}>
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                  }}
-                >
-                  <StartStopButton
-                    onStart={this.handleStart.bind(this)}
-                    onStop={this.handleStop.bind(this)}
-                  />
-                </Box>
-              </Grid>
-              <Grid item xs={4}></Grid>
-            </Grid>
-          </Box>
+          
+          <HomeSection state={this.state}/>
+          
           <Box
             component="footer"
             sx={{
@@ -113,36 +74,6 @@ class App extends React.Component {
         </Box>
       </React.Fragment>
     );
-  }
-
-  handleStart() {
-    startTrip(userEmail).then((trip) => {
-      this.updateState(trip.km, this.state.points);
-
-      this.startUpdateLoop();
-    });
-  }
-
-  startUpdateLoop() {
-    dataPointTimer = setInterval(() => {
-      const promise = sendDataPoint();
-      if (promise) {
-        promise.then((trip) => {
-          this.updateState(trip.km, this.state.points);
-        });
-      }
-    }, 2000);
-  }
-
-  stopUpdateLoop() {
-    clearInterval(dataPointTimer);
-  }
-
-  handleStop() {
-    this.stopUpdateLoop();
-    endTrip(userEmail).then((user) => {
-      this.updateState(this.state.distance, user.points);
-    });
   }
 
   updateState(distance, points) {
