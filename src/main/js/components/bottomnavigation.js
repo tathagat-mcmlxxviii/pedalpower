@@ -7,20 +7,20 @@ import DirectionsBikeIcon from "@mui/icons-material/DirectionsBike";
 import HistoryIcon from "@mui/icons-material/History";
 import TrainIcon from "@mui/icons-material/Train";
 
-export default function SimpleBottomNavigation() {
+export default function SimpleBottomNavigation(props) {
   const [value, setValue] = React.useState(0);
 
   return (
     <Box
       sx={{
-        backgroundColor:(theme) => theme.palette.grey[200],
+        backgroundColor: (theme) => theme.palette.grey[200],
       }}
     >
       <BottomNavigation
         showLabels
         value={value}
         onChange={(event, newValue) => {
-          setValue(newValue);
+          props.onPageChange(newValue);
         }}
       >
         <BottomNavigationAction
@@ -29,6 +29,7 @@ export default function SimpleBottomNavigation() {
           sx={{
             backgroundColor: (theme) => theme.palette.grey[200],
           }}
+          value="home"
         />
         <BottomNavigationAction
           label="Ranking"
@@ -36,6 +37,7 @@ export default function SimpleBottomNavigation() {
           sx={{
             backgroundColor: (theme) => theme.palette.grey[200],
           }}
+          value="ranking"
         />
         <BottomNavigationAction
           label="History"
@@ -43,6 +45,7 @@ export default function SimpleBottomNavigation() {
           sx={{
             backgroundColor: (theme) => theme.palette.grey[200],
           }}
+          value="history"
         />
         <BottomNavigationAction
           label="Tickets"
@@ -50,6 +53,7 @@ export default function SimpleBottomNavigation() {
           sx={{
             backgroundColor: (theme) => theme.palette.grey[200],
           }}
+          value="tickets"
         />
       </BottomNavigation>
     </Box>

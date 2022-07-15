@@ -85,7 +85,7 @@ class HomeSection extends React.Component {
 					this.updateState(trip.km, this.state.points);
 				});
 			}
-		}, 2000);
+		}, 1000);
 	}
 
 	stopUpdateLoop() {
