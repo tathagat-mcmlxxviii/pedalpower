@@ -23,6 +23,7 @@ public class UserController {
 	public User getUser(@RequestParam("email") String email) {
 		User user = userService.get(email);
 		user.setCurrentTrip(null);
+		user.setPurchaseHistory(null);
 		return user;
 	}
 }

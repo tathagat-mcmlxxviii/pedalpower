@@ -4,7 +4,6 @@ import {
 	userEmail,
 	sendDataPoint,
 	endTrip,
-	getUser,
 } from "./../api/api.js";
 
 import Box from "@mui/material/Box";

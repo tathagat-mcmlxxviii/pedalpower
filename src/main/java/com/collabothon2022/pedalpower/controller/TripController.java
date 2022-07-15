@@ -50,6 +50,7 @@ public class TripController {
 	public User endTrip(@RequestParam("email") String email) {
 		User user = userService.get(email);
 		user = userService.endTrip(user);
+		user.setPurchaseHistory(null);
 		return user;
 	}
 

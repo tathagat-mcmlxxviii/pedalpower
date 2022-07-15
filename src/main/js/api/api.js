@@ -48,10 +48,27 @@ export function endTrip(email) {
   );
 }
 
-
 export function getUser(email) {
-    return fetch("http://localhost:8080/user?email=" + email).then(
-      (response) => response.json()
-    );
-  }
-  
+  return fetch("http://localhost:8080/user?email=" + email).then((response) =>
+    response.json()
+  );
+}
+
+export function getBuyOptions() {
+  return fetch("http://localhost:8080/exchange/list").then((response) =>
+    response.json()
+  );
+}
+
+export function buy(email, buyUrl) {
+  return fetch("http://localhost:8080/exchange", {
+    method: "post",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      email: email,
+      buyUrl: buyUrl,
+    }),
+  }).then((response) => response.json());
+}

@@ -5,11 +5,8 @@ const React = require("react"); // <1>
 const ReactDOM = require("react-dom"); // <2>
 // end::vars[]
 import {
-  startTrip,
   userEmail,
-  sendDataPoint,
-  endTrip,
-  getUser,
+  getUser
 } from "./api/api.js";
 
 import Box from "@mui/material/Box";
@@ -84,7 +81,7 @@ class App extends React.Component {
   getContentElement() {
     if (this.state.page == "home") {
       return <HomeSection state={this.state} />;
-    } else if (this.state.page == "ticket") {
+    } else if (this.state.page == "tickets") {
       return <TicketSection state={this.state} />;
     } else {
       return <Box />;
